@@ -1,2 +1,2 @@
-# opx
-All automations and scripts that hold Operator Exchange together
+# Operator Exchange
+All automations and scripts that hold [Operator Exchange](https://operator.exchange) together. 
