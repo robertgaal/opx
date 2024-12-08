@@ -1,6 +1,18 @@
-// ABOUT:
-//   When a new member is approved, share their details in the 
-//   member directory channel on Telegram.
+/*
+PURPOSE:
+This script handles the workflow when a member is approved to join our group:
+1. Takes the member details from Airtable (where member form data is stored)
+2. Formats and posts the member to our Telegram member directory channel
+
+WORKFLOW:
+1. Member fills out a private member signup form
+2. Form data is saved to Airtable
+3. This automation runs to post the member details to Telegram
+
+The script requires a Config table in Airtable with bot token and channel details.
+The member directory channel uses Telegram Topics for better organization.
+*/
+
 // SETUP INSTRUCTIONS:
 // 1. Create a Config table in Airtable with these fields:
 //    - Key (Single line text)
@@ -13,18 +25,18 @@
 //
 // INPUT VARIABLES REQUIRED:
 // This automation expects these variables in input.config():
-//    - Name (text): Member's full name
-//    - Profile (url): Link to member's profile
-//    - Company (text): Company name
-//    - City (text): City of residence
-//    - Country (text): Country of residence
-//    - Investments (text): Investment history/portfolio
-//    - Since (text): Year started investing
-//    - Amount (text): Investment amount range per startup
-//    - Times (text): Number of investments per year
-//    - Areas (text): Investment focus areas
-//    - Skills (text): Expertise areas
-//    - Learn (text): Areas of interest for learning
+//    - name (text): Member's full name
+//    - profile (url): Link to member's profile
+//    - company (text): Company name
+//    - city (text): City of residence
+//    - country (text): Country of residence
+//    - investments (text): Investment history/portfolio
+//    - since (text): Year started investing
+//    - amount (text): Investment amount range per startup
+//    - times (text): Number of investments per year
+//    - areas (text): Investment focus areas
+//    - skills (text): Expertise areas
+//    - learn (text): Areas of interest for learning
 
 // First, get config values
 let configTable = base.getTable('Config');
@@ -41,16 +53,16 @@ for (let record of configRecords) {
 let form = input.config();
 
 let url = `https://api.telegram.org/bot${config.TELEGRAM_BOT_TOKEN}/sendMessage`;
-let message = "<a href='" + form.Profile + "'>" + form.Name + "</a>\n" 
-    + "" + form.Company + "\n\n"
-    + "- Location: " + form.City + ", " + form.Country + "\n"
-    + "- Investments: " + form.Investments + "\n"
-    + "- Investor since: " + form.Since + "\n"
-    + "- Amount per startup: " + form.Amount + "\n"
-    + "- Times per year: " + form.Times + "\n"
-    + "- Areas to invest: " + form.Areas + "\n"
-    + "- Skills: " + form.Skills + "\n "
-    + "- Looking to learn: " + form.Learn + "\n ";
+let message = "<a href='" + form.profile + "'>" + form.name + "</a>\n" 
+    + "" + form.company + "\n\n"
+    + "- Location: " + form.city + ", " + form.country + "\n"
+    + "- Investments: " + form.investments + "\n"
+    + "- Investor since: " + form.since + "\n"
+    + "- Amount per startup: " + form.amount + "\n"
+    + "- Times per year: " + form.times + "\n"
+    + "- Areas to invest: " + form.areas + "\n"
+    + "- Skills: " + form.skills + "\n "
+    + "- Looking to learn: " + form.learn + "\n ";
 
 let response = await fetch(url, 
     {
